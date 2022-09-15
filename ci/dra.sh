@@ -40,7 +40,7 @@ docker run --rm \
   docker.elastic.co/infra/release-manager:latest \
     cli collect \
       --project logstash \
-      --branch "$(git rev-parse --abbrev-ref HEAD)" \
+      --branch 8.0 \
       --commit "$(git rev-parse HEAD)" \
       --workflow "snapshot" \
       --version "${STACK_VERSION}" \
