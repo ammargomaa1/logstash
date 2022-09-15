@@ -22,3 +22,26 @@ bin/dependencies-report --csv=build/reports/dependencies-reports/logstash-${STAC
 
 echo "GENERATED DEPENDENCIES REPORT"
 shasum build/reports/dependencies-reports/logstash-${STACK_VERSION}.csv
+
+# set required permissions on artifacts and directory
+chmod -R a+r build/*
+chmod -R a+w build
+
+# ensure the latest image has been pulled
+docker pull docker.elastic.co/infra/release-manager:latest
+
+# collect the artifacts for use with the unified build
+docker run --rm \
+  --name release-manager \
+  -e VAULT_ADDR \
+  -e VAULT_ROLE_ID \
+  -e VAULT_SECRET_ID \
+  --mount type=bind,readonly=false,src="$PWD/build",target=/artifacts \
+  docker.elastic.co/infra/release-manager:latest \
+    cli collect \
+      --project logstash \
+      --branch "$(git rev-parse --abbrev-ref HEAD)" \
+      --commit "$(git rev-parse HEAD)" \
+      --workflow "snapshot" \
+      --version "${STACK_VERSION}" \
+      --artifact-set main
