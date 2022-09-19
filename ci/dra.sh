@@ -36,7 +36,7 @@ docker run --rm \
   -e VAULT_ADDR \
   -e VAULT_ROLE_ID \
   -e VAULT_SECRET_ID \
-  --mount type=bind,readonly=false,src="$PWD/build",target=/artifacts \
+  --mount type=bind,readonly=false,src="$PWD",target=/artifacts \
   docker.elastic.co/infra/release-manager:latest \
     cli collect \
       --project logstash \
