@@ -42,6 +42,6 @@ docker run --rm \
       --project logstash \
       --branch 8.4 \
       --commit "$(git rev-parse HEAD)" \
-      --workflow "snapshot" \
+      --workflow "staging" \
       --version "${STACK_VERSION}" \
       --artifact-set main
